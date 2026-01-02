@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MyKotlinApp</string>
     <string name="hello_world">Hello World!</string>
+    <string name="students_list">Students List</string>
+    <string name="student_picture">Student Picture</string>
 </resources>
 

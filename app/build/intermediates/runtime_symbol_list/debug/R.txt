@@ -3506,6 +3506,11 @@ int id staticLayout 0x7f0801a4
 int id staticPostLayout 0x7f0801a5
 int id stop 0x7f0801a6
 int id stretch 0x7f0801a7
+int id studentCheckBox 0x7f0801f1
+int id studentIdTextView 0x7f0801f2
+int id studentImageView 0x7f0801f3
+int id studentNameTextView 0x7f0801f4
+int id studentsListView 0x7f0801f5
 int id submenuarrow 0x7f0801a8
 int id submit_area 0x7f0801a9
 int id supportScrollUp 0x7f0801aa
@@ -3530,7 +3535,6 @@ int id textSpacerNoButtons 0x7f0801bc
 int id textSpacerNoTitle 0x7f0801bd
 int id textStart 0x7f0801be
 int id textTop 0x7f0801bf
-int id textView 0x7f0801c0
 int id text_input_end_icon 0x7f0801c1
 int id text_input_error_icon 0x7f0801c2
 int id text_input_start_icon 0x7f0801c3
@@ -3543,6 +3547,7 @@ int id textinput_suffix_text 0x7f0801c9
 int id time 0x7f0801ca
 int id title 0x7f0801cb
 int id titleDividerNoCustom 0x7f0801cc
+int id titleTextView 0x7f0801f6
 int id title_template 0x7f0801cd
 int id toggle 0x7f0801ce
 int id top 0x7f0801cf
@@ -3772,6 +3777,7 @@ int layout notification_template_part_time 0x7f0b0067
 int layout select_dialog_item_material 0x7f0b0068
 int layout select_dialog_multichoice_material 0x7f0b0069
 int layout select_dialog_singlechoice_material 0x7f0b006a
+int layout student_list_item 0x7f0b006c
 int layout support_simple_spinner_dropdown_item 0x7f0b006b
 int mipmap ic_launcher 0x7f0d0000
 int mipmap ic_launcher_round 0x7f0d0001
@@ -3944,6 +3950,8 @@ int string searchview_navigation_content_description 0x7f0f00a4
 int string side_sheet_accessibility_pane_title 0x7f0f00a5
 int string side_sheet_behavior 0x7f0f00a6
 int string status_bar_notification_info_overflow 0x7f0f00a7
+int string student_picture 0x7f0f00a8
+int string students_list 0x7f0f00a9
 int style AlertDialog_AppCompat 0x7f100000
 int style AlertDialog_AppCompat_Light 0x7f100001
 int style Animation_AppCompat_Dialog 0x7f100002
