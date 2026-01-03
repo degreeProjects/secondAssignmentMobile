@@ -1,7 +1,7 @@
 package com.example.mykotlinapp.dao
 
 import androidx.room.Room
-import com.idz.mykotlinapp.MyApplication
+import com.example.mykotlinapp.MyApplication
 
 object AppLocalDB {
 

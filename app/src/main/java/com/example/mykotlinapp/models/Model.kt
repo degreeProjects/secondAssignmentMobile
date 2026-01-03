@@ -2,11 +2,11 @@ package com.example.mykotlinapp.models
 
 import android.os.Handler
 import android.os.Looper
-import com.idz.mykotlinapp.base.Completion
-import com.idz.mykotlinapp.base.StudentCompletion
-import com.idz.mykotlinapp.base.StudentsCompletion
-import com.idz.mykotlinapp.dao.AppLocalDB
-import com.idz.mykotlinapp.dao.AppLocalDbRepository
+import com.example.mykotlinapp.base.Completion
+import com.example.mykotlinapp.base.StudentCompletion
+import com.example.mykotlinapp.base.StudentsCompletion
+import com.example.mykotlinapp.dao.AppLocalDB
+import com.example.mykotlinapp.dao.AppLocalDbRepository
 import java.util.concurrent.Executors
 
 class Model private constructor() {

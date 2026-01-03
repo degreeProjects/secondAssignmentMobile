@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.idz.mykotlinapp.models.Student
+import com.example.mykotlinapp.models.Student
 
 @Dao
 interface StudentDao {

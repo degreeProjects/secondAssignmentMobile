@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.mykotlinapp.models.Student
 
 class StudentsAdapter(
     private val context: Context,
@@ -40,17 +41,18 @@ class StudentsAdapter(
 
         val student = getItem(position)
 
-        holder.imageView.setImageResource(student.avatarResId)
+        // Use default gallery icon as placeholder
+        holder.imageView.setImageResource(android.R.drawable.ic_menu_gallery)
         holder.nameTextView.text = student.name
         holder.idTextView.text = "ID: ${student.id}"
         
         // Remove previous listener to avoid conflicts
         holder.checkBox.setOnCheckedChangeListener(null)
-        holder.checkBox.isChecked = student.isChecked
+        holder.checkBox.isChecked = student.isPresent
 
         // Set new listener
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-            student.isChecked = isChecked
+            student.isPresent = isChecked
         }
 
         return view
