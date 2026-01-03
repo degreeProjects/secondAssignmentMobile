@@ -1,4 +1,15 @@
 package com.example.mykotlinapp.models
 
-class Student {
-}
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class Student(
+
+    @PrimaryKey
+    val id: String,
+    
+    val name: String,
+    var isPresent: Boolean = false,
+    val avatarUrlString: String?
+)
