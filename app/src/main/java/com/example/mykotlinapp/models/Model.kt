@@ -47,6 +47,15 @@ class Model private constructor() {
         }
     }
 
+    fun updateStudent(student: Student, completion: Completion) {
+        executor.execute {
+            database.studentDao.updateStudent(student)
+            mainHandler.post {
+                completion()
+            }
+        }
+    }
+
     fun getStudentById(id: String, completion: StudentCompletion) {
         executor.execute {
             val student = database.studentDao.getStudentById(id)

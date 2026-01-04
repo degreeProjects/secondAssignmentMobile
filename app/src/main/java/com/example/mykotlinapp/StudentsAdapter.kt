@@ -9,11 +9,17 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.mykotlinapp.models.Student
+import com.example.mykotlinapp.dao.AppLocalDB
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class StudentsAdapter(
     private val context: Context,
     private val students: List<Student>
 ) : BaseAdapter() {
+
+    private val db by lazy { AppLocalDB.db }
 
     override fun getCount(): Int = students.size
 
@@ -53,6 +59,11 @@ class StudentsAdapter(
         // Set new listener
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             student.isPresent = isChecked
+            
+            // Update student in database
+            CoroutineScope(Dispatchers.IO).launch {
+                db.studentDao.updateStudent(student)
+            }
         }
 
         return view
