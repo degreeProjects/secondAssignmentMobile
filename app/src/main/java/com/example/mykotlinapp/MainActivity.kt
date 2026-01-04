@@ -8,14 +8,20 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.mykotlinapp.dao.AppLocalDB
 import com.example.mykotlinapp.models.Student
 import com.google.android.material.appbar.MaterialToolbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     
     private lateinit var studentsListView: ListView
     private lateinit var studentsAdapter: StudentsAdapter
     private val studentsList = mutableListOf<Student>()
+    private val db by lazy { AppLocalDB.db }
 
     // Activity result launcher for CreateStudentActivity
     private val createStudentLauncher = registerForActivityResult(
@@ -28,21 +34,45 @@ class MainActivity : AppCompatActivity() {
                 val phone = data.getStringExtra("STUDENT_PHONE")
                 val address = data.getStringExtra("STUDENT_ADDRESS")
 
-                // Create new Student object
-                val newStudent = Student(
-                    id = id,
-                    name = name,
-                    isPresent = false,
-                    avatarUrlString = null,
-                    address = address,
-                    phoneNumber = phone
-                )
+                // Check if student ID already exists before creating
+                lifecycleScope.launch {
+                    val existingStudent = withContext(Dispatchers.IO) {
+                        try {
+                            db.studentDao.getStudentById(id)
+                        } catch (e: Exception) {
+                            null // Student doesn't exist
+                        }
+                    }
+                    
+                    if (existingStudent != null) {
+                        // Student with this ID already exists
+                        Toast.makeText(
+                            this@MainActivity, 
+                            "Error: Student with ID $id already exists!", 
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        // Create new Student object
+                        val newStudent = Student(
+                            id = id,
+                            name = name,
+                            isPresent = false,
+                            avatarUrlString = null,
+                            address = address,
+                            phoneNumber = phone
+                        )
 
-                // Add to list and notify adapter
-                studentsList.add(newStudent)
-                studentsAdapter.notifyDataSetChanged()
-                
-                Toast.makeText(this, "Student added successfully", Toast.LENGTH_SHORT).show()
+                        // Insert student into database
+                        withContext(Dispatchers.IO) {
+                            db.studentDao.insertStudents(newStudent)
+                        }
+                        
+                        // Reload students from database
+                        loadStudents()
+                        
+                        Toast.makeText(this@MainActivity, "Student added successfully", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -57,12 +87,15 @@ class MainActivity : AppCompatActivity() {
 
         studentsListView = findViewById(R.id.studentsListView)
 
-        // Initialize sample students data
-        initializeStudents()
-
         // Set up adapter
         studentsAdapter = StudentsAdapter(this, studentsList)
         studentsListView.adapter = studentsAdapter
+
+        // Initialize database with sample data if empty, then load students
+        lifecycleScope.launch {
+            initializeDatabaseIfNeeded()
+            loadStudents()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -82,16 +115,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeStudents() {
-        studentsList.apply {
-            add(Student("123456", "John Smith"))
-            add(Student("234567", "Emma Johnson"))
-            add(Student("345678", "Michael Brown"))
-            add(Student("456789", "Sophia Davis"))
-            add(Student("567890", "William Wilson"))
-            add(Student("678901", "Olivia Martinez"))
-            add(Student("789012", "James Anderson"))
-            add(Student("890123", "Isabella Taylor"))
+    private suspend fun initializeDatabaseIfNeeded() {
+        withContext(Dispatchers.IO) {
+            val existingStudents = db.studentDao.getAllStudents()
+            
+            // If database is empty, add sample data
+            if (existingStudents.isEmpty()) {
+                val sampleStudents = arrayOf(
+                    Student("123456", "Leo Messi"),
+                    Student("234567", "Donald Trump"),
+                )
+                
+                db.studentDao.insertStudents(*sampleStudents)
+            }
         }
+    }
+
+    private suspend fun loadStudents() {
+        val students = withContext(Dispatchers.IO) {
+            db.studentDao.getAllStudents()
+        }
+        
+        studentsList.clear()
+        studentsList.addAll(students)
+        studentsAdapter.notifyDataSetChanged()
     }
 }
