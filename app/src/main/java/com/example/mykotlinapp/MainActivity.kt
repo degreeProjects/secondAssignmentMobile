@@ -4,11 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mykotlinapp.dao.AppLocalDB
 import com.example.mykotlinapp.models.Student
 import com.google.android.material.appbar.MaterialToolbar
@@ -18,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     
-    private lateinit var studentsListView: ListView
+    private lateinit var studentsRecyclerView: RecyclerView
     private lateinit var studentsAdapter: StudentsAdapter
     private val studentsList = mutableListOf<Student>()
     private val db by lazy { AppLocalDB.db }
@@ -67,11 +68,12 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        studentsListView = findViewById(R.id.studentsListView)
+        studentsRecyclerView = findViewById(R.id.studentsRecyclerView)
 
-        // Set up adapter
-        studentsAdapter = StudentsAdapter(this, studentsList)
-        studentsListView.adapter = studentsAdapter
+        // Set up RecyclerView with LinearLayoutManager
+        studentsRecyclerView.layoutManager = LinearLayoutManager(this)
+        studentsAdapter = StudentsAdapter(studentsList)
+        studentsRecyclerView.adapter = studentsAdapter
 
         // Initialize database with sample data if empty, then load students
         lifecycleScope.launch {
