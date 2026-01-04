@@ -4,8 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.mykotlinapp.dao.AppLocalDB
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CreateStudentActivity : AppCompatActivity() {
 
@@ -14,6 +19,7 @@ class CreateStudentActivity : AppCompatActivity() {
     private lateinit var etStudentPhone: TextInputEditText
     private lateinit var etStudentAddress: TextInputEditText
     private lateinit var btnSaveStudent: Button
+    private val db by lazy { AppLocalDB.db }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,19 +65,36 @@ class CreateStudentActivity : AppCompatActivity() {
             isValid = false
         }
 
-        // If validation passes, return the data
+        // If validation passes, check for duplicate ID
         if (isValid) {
-            val resultIntent = Intent()
-            resultIntent.putExtra("STUDENT_ID", studentId)
-            resultIntent.putExtra("STUDENT_NAME", studentName)
-            resultIntent.putExtra("STUDENT_PHONE", studentPhone.ifEmpty { null })
-            resultIntent.putExtra("STUDENT_ADDRESS", studentAddress.ifEmpty { null })
+            lifecycleScope.launch {
+                val existingStudent = withContext(Dispatchers.IO) {
+                    try {
+                        db.studentDao.getStudentById(studentId)
+                    } catch (e: Exception) {
+                        null // Student doesn't exist
+                    }
+                }
+                
+                if (existingStudent != null) {
+                    // Student with this ID already exists - show inline error
+                    etStudentId.error = "This ID already exists"
+                    etStudentId.requestFocus()
+                } else {
+                    // ID is unique, return the data
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("STUDENT_ID", studentId)
+                    resultIntent.putExtra("STUDENT_NAME", studentName)
+                    resultIntent.putExtra("STUDENT_PHONE", studentPhone.ifEmpty { null })
+                    resultIntent.putExtra("STUDENT_ADDRESS", studentAddress.ifEmpty { null })
 
-            setResult(RESULT_OK, resultIntent)
-            finish()
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
+            }
         }
     }
-
+    
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true

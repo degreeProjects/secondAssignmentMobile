@@ -34,44 +34,26 @@ class MainActivity : AppCompatActivity() {
                 val phone = data.getStringExtra("STUDENT_PHONE")
                 val address = data.getStringExtra("STUDENT_ADDRESS")
 
-                // Check if student ID already exists before creating
+                // Create new Student object (validations already done in CreateStudentActivity)
+                val newStudent = Student(
+                    id = id,
+                    name = name,
+                    isPresent = false,
+                    avatarUrlString = null,
+                    address = address,
+                    phoneNumber = phone
+                )
+
+                // Insert student into database
                 lifecycleScope.launch {
-                    val existingStudent = withContext(Dispatchers.IO) {
-                        try {
-                            db.studentDao.getStudentById(id)
-                        } catch (e: Exception) {
-                            null // Student doesn't exist
-                        }
+                    withContext(Dispatchers.IO) {
+                        db.studentDao.insertStudents(newStudent)
                     }
                     
-                    if (existingStudent != null) {
-                        // Student with this ID already exists
-                        Toast.makeText(
-                            this@MainActivity, 
-                            "Error: Student with ID $id already exists!", 
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        // Create new Student object
-                        val newStudent = Student(
-                            id = id,
-                            name = name,
-                            isPresent = false,
-                            avatarUrlString = null,
-                            address = address,
-                            phoneNumber = phone
-                        )
-
-                        // Insert student into database
-                        withContext(Dispatchers.IO) {
-                            db.studentDao.insertStudents(newStudent)
-                        }
-                        
-                        // Reload students from database
-                        loadStudents()
-                        
-                        Toast.makeText(this@MainActivity, "Student added successfully", Toast.LENGTH_SHORT).show()
-                    }
+                    // Reload students from database
+                    loadStudents()
+                    
+                    Toast.makeText(this@MainActivity, "Student added successfully", Toast.LENGTH_SHORT).show()
                 }
             }
         }
