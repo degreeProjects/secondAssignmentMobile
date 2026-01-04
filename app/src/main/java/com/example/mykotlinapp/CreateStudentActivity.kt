@@ -4,13 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.mykotlinapp.dao.AppLocalDB
+import com.example.mykotlinapp.models.Model
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CreateStudentActivity : AppCompatActivity() {
 
@@ -19,7 +15,7 @@ class CreateStudentActivity : AppCompatActivity() {
     private lateinit var etStudentPhone: TextInputEditText
     private lateinit var etStudentAddress: TextInputEditText
     private lateinit var btnSaveStudent: Button
-    private val db by lazy { AppLocalDB.db }
+    private val model = Model.shared
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,15 +63,7 @@ class CreateStudentActivity : AppCompatActivity() {
 
         // If validation passes, check for duplicate ID
         if (isValid) {
-            lifecycleScope.launch {
-                val existingStudent = withContext(Dispatchers.IO) {
-                    try {
-                        db.studentDao.getStudentById(studentId)
-                    } catch (e: Exception) {
-                        null // Student doesn't exist
-                    }
-                }
-                
+            model.getStudentById(studentId) { existingStudent ->
                 if (existingStudent != null) {
                     // Student with this ID already exists - show inline error
                     etStudentId.error = "This ID already exists"

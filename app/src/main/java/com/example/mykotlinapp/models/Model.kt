@@ -58,7 +58,11 @@ class Model private constructor() {
 
     fun getStudentById(id: String, completion: StudentCompletion) {
         executor.execute {
-            val student = database.studentDao.getStudentById(id)
+            val student = try {
+                database.studentDao.getStudentById(id)
+            } catch (e: Exception) {
+                null // Student doesn't exist or other error
+            }
             mainHandler.post {
                 completion(student)
             }

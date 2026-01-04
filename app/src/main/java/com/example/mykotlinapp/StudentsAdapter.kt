@@ -7,17 +7,13 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mykotlinapp.models.Model
 import com.example.mykotlinapp.models.Student
-import com.example.mykotlinapp.dao.AppLocalDB
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class StudentsAdapter(
-    private val students: List<Student>
+    private val students: List<Student>,
+    private val model: Model
 ) : RecyclerView.Adapter<StudentsAdapter.StudentViewHolder>() {
-
-    private val db by lazy { AppLocalDB.db }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -52,10 +48,8 @@ class StudentsAdapter(
             checkBox.setOnCheckedChangeListener { _, isChecked ->
                 student.isPresent = isChecked
                 
-                // Update student in database
-                CoroutineScope(Dispatchers.IO).launch {
-                    db.studentDao.updateStudent(student)
-                }
+                // Update student using Model (UI already updated, so callback is empty)
+                model.updateStudent(student) {}
             }
         }
     }

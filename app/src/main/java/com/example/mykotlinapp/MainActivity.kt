@@ -7,22 +7,18 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mykotlinapp.dao.AppLocalDB
+import com.example.mykotlinapp.models.Model
 import com.example.mykotlinapp.models.Student
 import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     
     private lateinit var studentsRecyclerView: RecyclerView
     private lateinit var studentsAdapter: StudentsAdapter
     private val studentsList = mutableListOf<Student>()
-    private val db by lazy { AppLocalDB.db }
+    private val model = Model.shared
 
     // Activity result launcher for CreateStudentActivity
     private val createStudentLauncher = registerForActivityResult(
@@ -35,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                 val phone = data.getStringExtra("STUDENT_PHONE")
                 val address = data.getStringExtra("STUDENT_ADDRESS")
 
-                // Create new Student object (validations already done in CreateStudentActivity)
+                // Create new Student object
                 val newStudent = Student(
                     id = id,
                     name = name,
@@ -45,15 +41,10 @@ class MainActivity : AppCompatActivity() {
                     phoneNumber = phone
                 )
 
-                // Insert student into database
-                lifecycleScope.launch {
-                    withContext(Dispatchers.IO) {
-                        db.studentDao.insertStudents(newStudent)
-                    }
-                    
+                // Insert student using Model
+                model.addStudent(newStudent) {
                     // Reload students from database
                     loadStudents()
-                    
                     Toast.makeText(this@MainActivity, "Student added successfully", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -72,14 +63,11 @@ class MainActivity : AppCompatActivity() {
 
         // Set up RecyclerView with LinearLayoutManager
         studentsRecyclerView.layoutManager = LinearLayoutManager(this)
-        studentsAdapter = StudentsAdapter(studentsList)
+        studentsAdapter = StudentsAdapter(studentsList, model)
         studentsRecyclerView.adapter = studentsAdapter
 
         // Initialize database with sample data if empty, then load students
-        lifecycleScope.launch {
-            initializeDatabaseIfNeeded()
-            loadStudents()
-        }
+        initializeDatabaseIfNeeded()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -99,29 +87,38 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun initializeDatabaseIfNeeded() {
-        withContext(Dispatchers.IO) {
-            val existingStudents = db.studentDao.getAllStudents()
-            
+    private fun initializeDatabaseIfNeeded() {
+        model.getAllStudents { students ->
             // If database is empty, add sample data
-            if (existingStudents.isEmpty()) {
+            if (students.isEmpty()) {
                 val sampleStudents = arrayOf(
                     Student("123456", "Leo Messi"),
-                    Student("234567", "Donald Trump"),
+                    Student("234567", "Donald Trump")
                 )
                 
-                db.studentDao.insertStudents(*sampleStudents)
+                // Add sample students one by one
+                var addedCount = 0
+                sampleStudents.forEach { student ->
+                    model.addStudent(student) {
+                        addedCount++
+                        if (addedCount == sampleStudents.size) {
+                            // All sample students added, now load
+                            loadStudents()
+                        }
+                    }
+                }
+            } else {
+                // Database has data, just load it
+                loadStudents()
             }
         }
     }
 
-    private suspend fun loadStudents() {
-        val students = withContext(Dispatchers.IO) {
-            db.studentDao.getAllStudents()
+    private fun loadStudents() {
+        model.getAllStudents { students ->
+            studentsList.clear()
+            studentsList.addAll(students)
+            studentsAdapter.notifyDataSetChanged()
         }
-        
-        studentsList.clear()
-        studentsList.addAll(students)
-        studentsAdapter.notifyDataSetChanged()
     }
 }
