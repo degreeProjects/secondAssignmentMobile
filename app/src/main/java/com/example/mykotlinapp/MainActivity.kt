@@ -1,52 +1,123 @@
 package com.example.mykotlinapp
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.ListView
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mykotlinapp.models.Model
 import com.example.mykotlinapp.models.Student
+import com.google.android.material.appbar.MaterialToolbar
 
 class MainActivity : AppCompatActivity() {
     
-    private lateinit var studentsListView: ListView
+    private lateinit var studentsRecyclerView: RecyclerView
     private lateinit var studentsAdapter: StudentsAdapter
     private val studentsList = mutableListOf<Student>()
+    private val model = Model.shared
+
+    // Activity result launcher for CreateStudentActivity
+    private val createStudentLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.let { data ->
+                val id = data.getStringExtra("STUDENT_ID") ?: return@let
+                val name = data.getStringExtra("STUDENT_NAME") ?: return@let
+                val phone = data.getStringExtra("STUDENT_PHONE")
+                val address = data.getStringExtra("STUDENT_ADDRESS")
+
+                // Create new Student object
+                val newStudent = Student(
+                    id = id,
+                    name = name,
+                    isPresent = false,
+                    address = address,
+                    phoneNumber = phone
+                )
+
+                // Insert student using Model
+                model.addStudent(newStudent) {
+                    // Reload students from database
+                    loadStudents()
+                    Toast.makeText(this@MainActivity, "Student added successfully", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        studentsListView = findViewById(R.id.studentsListView)
+        // Set up toolbar
+        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        // Initialize sample students data
-        initializeStudents()
+        studentsRecyclerView = findViewById(R.id.studentsRecyclerView)
 
-        // Set up adapter
-        studentsAdapter = StudentsAdapter(this, studentsList)
-        studentsListView.adapter = studentsAdapter
+        // Set up RecyclerView with LinearLayoutManager
+        studentsRecyclerView.layoutManager = LinearLayoutManager(this)
+        studentsAdapter = StudentsAdapter(studentsList, model)
+        studentsRecyclerView.adapter = studentsAdapter
+
+        // Initialize database with sample data if empty, then load students
+        initializeDatabaseIfNeeded()
     }
 
-    private fun initializeStudents() {
-        studentsList.apply {
-            add(Student("123456", "John Smith", false, null))
-            add(Student("234567", "Emma Johnson", false, null))
-            add(Student("345678", "Michael Brown", false, null))
-            add(Student("456789", "Sophia Davis", false, null))
-            add(Student("567890", "William Wilson", false, null))
-            add(Student("678901", "Olivia Martinez", false, null))
-            add(Student("789012", "James Anderson", false, null))
-            add(Student("890123", "Isabella Taylor", false, null))
-            add(Student("901234", "Benjamin Thomas", false, null))
-            add(Student("012345", "Mia Garcia", false, null))
-            add(Student("112233", "Daniel Rodriguez", false, null))
-            add(Student("223344", "Ava Hernandez", false, null))
-            add(Student("334455", "Matthew Moore", false, null))
-            add(Student("445566", "Charlotte Martin", false, null))
-            add(Student("556677", "David Lee", false, null))
-            add(Student("667788", "Amelia White", false, null))
-            add(Student("778899", "Joseph Harris", false, null))
-            add(Student("889900", "Emily Clark", false, null))
-            add(Student("990011", "Andrew Lewis", false, null))
-            add(Student("101112", "Abigail Walker", false, null))
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add_student -> {
+                // Launch CreateStudentActivity
+                val intent = Intent(this, CreateStudentActivity::class.java)
+                createStudentLauncher.launch(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun initializeDatabaseIfNeeded() {
+        model.getAllStudents { students ->
+            // If database is empty, add sample data
+            if (students.isEmpty()) {
+                val sampleStudents = arrayOf(
+                    Student("123456", "Leo Messi"),
+                    Student("234567", "Donald Trump")
+                )
+                
+                // Add sample students one by one
+                var addedCount = 0
+                sampleStudents.forEach { student ->
+                    model.addStudent(student) {
+                        addedCount++
+                        if (addedCount == sampleStudents.size) {
+                            // All sample students added, now load
+                            loadStudents()
+                        }
+                    }
+                }
+            } else {
+                // Database has data, just load it
+                loadStudents()
+            }
+        }
+    }
+
+    private fun loadStudents() {
+        model.getAllStudents { students ->
+            studentsList.clear()
+            studentsList.addAll(students)
+            studentsAdapter.notifyDataSetChanged()
         }
     }
 }

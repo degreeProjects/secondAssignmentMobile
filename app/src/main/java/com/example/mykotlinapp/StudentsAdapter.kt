@@ -1,69 +1,56 @@
 package com.example.mykotlinapp
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mykotlinapp.models.Model
 import com.example.mykotlinapp.models.Student
 
 class StudentsAdapter(
-    private val context: Context,
-    private val students: List<Student>
-) : BaseAdapter() {
+    private val students: List<Student>,
+    private val model: Model
+) : RecyclerView.Adapter<StudentsAdapter.StudentViewHolder>() {
 
-    override fun getCount(): Int = students.size
-
-    override fun getItem(position: Int): Student = students[position]
-
-    override fun getItemId(position: Int): Long = position.toLong()
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View
-        val holder: ViewHolder
-
-        if (convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.student_list_item, parent, false)
-            holder = ViewHolder(
-                view.findViewById(R.id.studentImageView),
-                view.findViewById(R.id.studentNameTextView),
-                view.findViewById(R.id.studentIdTextView),
-                view.findViewById(R.id.studentCheckBox)
-            )
-            view.tag = holder
-        } else {
-            view = convertView
-            holder = view.tag as ViewHolder
-        }
-
-        val student = getItem(position)
-
-        // Use default gallery icon as placeholder
-        holder.imageView.setImageResource(android.R.drawable.ic_menu_gallery)
-        holder.nameTextView.text = student.name
-        holder.idTextView.text = "ID: ${student.id}"
-        
-        // Remove previous listener to avoid conflicts
-        holder.checkBox.setOnCheckedChangeListener(null)
-        holder.checkBox.isChecked = student.isPresent
-
-        // Set new listener
-        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-            student.isPresent = isChecked
-        }
-
-        return view
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.student_list_item, parent, false)
+        return StudentViewHolder(view)
     }
 
-    private data class ViewHolder(
-        val imageView: ImageView,
-        val nameTextView: TextView,
-        val idTextView: TextView,
-        val checkBox: CheckBox
-    )
+    override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
+        val student = students[position]
+        holder.bind(student)
+    }
+
+    override fun getItemCount(): Int = students.size
+
+    inner class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imageView: ImageView = itemView.findViewById(R.id.studentImageView)
+        private val nameTextView: TextView = itemView.findViewById(R.id.studentNameTextView)
+        private val idTextView: TextView = itemView.findViewById(R.id.studentIdTextView)
+        private val checkBox: CheckBox = itemView.findViewById(R.id.studentCheckBox)
+
+        fun bind(student: Student) {
+            // Always use the default user_icon for all students
+            imageView.setImageResource(R.drawable.user_icon)
+            nameTextView.text = student.name
+            idTextView.text = "ID: ${student.id}"
+            
+            // Remove previous listener to avoid conflicts
+            checkBox.setOnCheckedChangeListener(null)
+            checkBox.isChecked = student.isPresent
+
+            // Set new listener
+            checkBox.setOnCheckedChangeListener { _, isChecked ->
+                student.isPresent = isChecked
+                
+                // Update student using Model (UI already updated, so callback is empty)
+                model.updateStudent(student) {}
+            }
+        }
+    }
 }
-
-
