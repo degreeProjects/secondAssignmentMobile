@@ -35,8 +35,8 @@ class StudentsAdapter(
         private val checkBox: CheckBox = itemView.findViewById(R.id.studentCheckBox)
 
         fun bind(student: Student) {
-            // Use default gallery icon as placeholder
-            imageView.setImageResource(android.R.drawable.ic_menu_gallery)
+            // Always use the default user_icon for all students
+            imageView.setImageResource(R.drawable.user_icon)
             nameTextView.text = student.name
             idTextView.text = "ID: ${student.id}"
             

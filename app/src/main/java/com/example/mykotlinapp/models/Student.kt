@@ -11,7 +11,6 @@ data class Student(
     
     val name: String,
     var isPresent: Boolean = false,
-    val avatarUrlString: String? = null,
     val address: String? = null,
     val phoneNumber: String? = null,
 )

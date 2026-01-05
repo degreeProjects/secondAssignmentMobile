@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
                     id = id,
                     name = name,
                     isPresent = false,
-                    avatarUrlString = null,
                     address = address,
                     phoneNumber = phone
                 )
