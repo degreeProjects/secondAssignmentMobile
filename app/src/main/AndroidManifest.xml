@@ -27,6 +27,10 @@
             android:name=".StudentDetailsActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".EditStudentActivity"
+            android:exported="false"
+            android:parentActivityName=".StudentDetailsActivity" />
     </application>
 
 </manifest>

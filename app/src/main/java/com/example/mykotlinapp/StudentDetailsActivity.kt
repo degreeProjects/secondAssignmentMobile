@@ -88,9 +88,18 @@ class StudentDetailsActivity : AppCompatActivity() {
         studentDetailsAddress.text = studentAddress ?: "N/A"
         studentDetailsIsPresent.isChecked = isPresent
 
-        // Set up Edit button click listener (empty for now)
+        // Set up Edit button click listener
         btnEdit.setOnClickListener {
-            // TODO: Implement edit functionality
+            // Launch EditStudentActivity with student data
+            val intent = Intent(this, EditStudentActivity::class.java).apply {
+                putExtra("STUDENT_ID", studentId)
+                putExtra("STUDENT_NAME", studentName)
+                putExtra("STUDENT_PHONE", studentPhone)
+                putExtra("STUDENT_ADDRESS", studentAddress)
+                putExtra("IS_PRESENT", isPresent)
+            }
+            startActivity(intent)
+            finish() // Close current details activity
         }
     }
 
