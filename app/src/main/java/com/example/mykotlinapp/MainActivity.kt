@@ -62,11 +62,27 @@ class MainActivity : AppCompatActivity() {
 
         // Set up RecyclerView with LinearLayoutManager
         studentsRecyclerView.layoutManager = LinearLayoutManager(this)
-        studentsAdapter = StudentsAdapter(studentsList, model)
+        studentsAdapter = StudentsAdapter(studentsList, model) { student ->
+            // Handle student item click - open StudentDetailsActivity
+            val intent = Intent(this, StudentDetailsActivity::class.java).apply {
+                putExtra("STUDENT_ID", student.id)
+                putExtra("STUDENT_NAME", student.name)
+                putExtra("STUDENT_PHONE", student.phoneNumber)
+                putExtra("STUDENT_ADDRESS", student.address)
+                putExtra("IS_PRESENT", student.isPresent)
+            }
+            startActivity(intent)
+        }
         studentsRecyclerView.adapter = studentsAdapter
 
         // Initialize database with sample data if empty, then load students
         initializeDatabaseIfNeeded()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reload students when returning to this activity
+        loadStudents()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

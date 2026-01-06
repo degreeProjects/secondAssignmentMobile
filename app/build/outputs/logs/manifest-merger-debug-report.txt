@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:1-28:12
+ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:1-32:12
+INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:1-32:12
+INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:1-32:12
+INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:1-32:12
 MERGED from [androidx.databinding:viewbinding:8.13.1] C:\Users\benbe\.gradle\caches\8.13\transforms\6ab9447cb4ce43d762c17497bbab8b26\transformed\jetified-viewbinding-8.13.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.room:room-runtime-android:2.8.4] C:\Users\benbe\.gradle\caches\8.13\transforms\77bdbedacacc57b10fd20526b781d2b4\transformed\jetified-room-runtime\AndroidManifest.xml:17:1-31:12
 MERGED from [androidx.room:room-ktx:2.8.4] C:\Users\benbe\.gradle\caches\8.13\transforms\602c7012bcab6145a64b6ba326cd2f22\transformed\jetified-room-ktx-2.8.4\AndroidManifest.xml:17:1-22:12
@@ -79,8 +79,8 @@ MERGED from [androidx.compose.runtime:runtime-annotation-android:1.9.0] C:\Users
 	xmlns:android
 		ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:5:5-26:19
-INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:5:5-26:19
+ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:5:5-30:19
+INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:5:5-30:19
 MERGED from [androidx.room:room-runtime-android:2.8.4] C:\Users\benbe\.gradle\caches\8.13\transforms\77bdbedacacc57b10fd20526b781d2b4\transformed\jetified-room-runtime\AndroidManifest.xml:23:5-29:19
 MERGED from [androidx.room:room-runtime-android:2.8.4] C:\Users\benbe\.gradle\caches\8.13\transforms\77bdbedacacc57b10fd20526b781d2b4\transformed\jetified-room-runtime\AndroidManifest.xml:23:5-29:19
 MERGED from [com.google.android.material:material:1.13.0] C:\Users\benbe\.gradle\caches\8.13\transforms\bfba173a44dc5610fc30976f9c20d324\transformed\material-1.13.0\AndroidManifest.xml:22:5-20
@@ -147,6 +147,14 @@ ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidM
 		ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:24:13-37
 	android:name
 		ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:23:13-50
+activity#com.example.mykotlinapp.StudentDetailsActivity
+ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:26:9-29:58
+	android:parentActivityName
+		ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:29:13-55
+	android:exported
+		ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:28:13-37
+	android:name
+		ADDED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml:27:13-51
 uses-sdk
 INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\benbe\Downloads\secondAssignmentMobile\app\src\main\AndroidManifest.xml

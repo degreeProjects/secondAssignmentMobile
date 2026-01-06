@@ -12,7 +12,8 @@ import com.example.mykotlinapp.models.Student
 
 class StudentsAdapter(
     private val students: List<Student>,
-    private val model: Model
+    private val model: Model,
+    private val onItemClick: (Student) -> Unit
 ) : RecyclerView.Adapter<StudentsAdapter.StudentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
@@ -50,6 +51,11 @@ class StudentsAdapter(
                 
                 // Update student using Model (UI already updated, so callback is empty)
                 model.updateStudent(student) {}
+            }
+            
+            // Set click listener for the entire item
+            itemView.setOnClickListener {
+                onItemClick(student)
             }
         }
     }
