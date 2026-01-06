@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_blue_background">
+
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="99dp"
+        android:paddingTop="35dp"
+        android:background="@color/light_blue_primary"
+        android:gravity="center_vertical"
+        app:title="Student Details"
+        app:titleTextColor="@color/white"
+        app:titleMarginStart="16dp"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:menu="@menu/menu_student_details"/>
+
+    <!-- Content ScrollView -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Student Picture -->
+            <ImageView
+                android:id="@+id/studentDetailsPicture"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:src="@drawable/user_icon"
+                android:contentDescription="Student Picture" />
+
+            <!-- Student ID Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Student ID"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/studentDetailsId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:padding="12dp"
+                android:background="@color/white"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Name Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/studentDetailsName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:padding="12dp"
+                android:background="@color/white"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Phone Number Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone Number"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/studentDetailsPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:padding="12dp"
+                android:background="@color/white"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Address Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/studentDetailsAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:padding="12dp"
+                android:background="@color/white"
+                android:minHeight="60dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Is Present CheckBox -->
+            <CheckBox
+                android:id="@+id/studentDetailsIsPresent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Present"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:enabled="false"
+                android:layout_marginBottom="16dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Edit Button at Bottom -->
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/light_blue_button"
+        android:padding="16dp"
+        android:text="Edit"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</LinearLayout>
+
