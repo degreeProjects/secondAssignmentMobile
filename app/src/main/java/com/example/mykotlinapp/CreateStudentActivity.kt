@@ -56,7 +56,7 @@ class CreateStudentActivity : AppCompatActivity() {
             isValid = false
         }
 
-        //check if name is empty
+        //check if Name is empty
         if (studentName.isEmpty()) {
             createStudentName.error = "Name is required"
             createStudentName.requestFocus()
