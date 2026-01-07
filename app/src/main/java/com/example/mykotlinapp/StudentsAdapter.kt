@@ -16,6 +16,8 @@ class StudentsAdapter(
     private val onItemClick: (Student) -> Unit
 ) : RecyclerView.Adapter<StudentsAdapter.StudentViewHolder>() {
 
+    // Called by RecyclerView when it needs to create a new ViewHolder
+    // This inflates the layout and creates the view holder object
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.student_list_item, parent, false)
