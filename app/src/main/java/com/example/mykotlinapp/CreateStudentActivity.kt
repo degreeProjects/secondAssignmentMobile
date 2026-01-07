@@ -49,6 +49,7 @@ class CreateStudentActivity : AppCompatActivity() {
         // Validate required fields
         var isValid = true
 
+        //check if Id is empty
         if (studentId.isEmpty()) {
             createStudentId.error = "Student ID is required"
             createStudentId.requestFocus()
