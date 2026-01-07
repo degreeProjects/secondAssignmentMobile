@@ -62,15 +62,17 @@ class EditStudentActivity : AppCompatActivity() {
         editStudentAddress.setText(studentAddress ?: "")
         editStudentIsPresent.isChecked = isPresent
 
-        // Set up button click listeners
+        // Set up cancel button click listener
         editStudentBtnCancel.setOnClickListener {
             finish()
         }
 
+        // Set up edit button click listener
         editStudentBtnDelete.setOnClickListener {
             showDeleteConfirmationDialog()
         }
 
+        // Set up save button click listener
         editStudentBtnSave.setOnClickListener {
             saveStudent()
         }

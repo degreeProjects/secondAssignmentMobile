@@ -16,12 +16,16 @@ class StudentsAdapter(
     private val onItemClick: (Student) -> Unit
 ) : RecyclerView.Adapter<StudentsAdapter.StudentViewHolder>() {
 
+    // Called by RecyclerView when it needs to create a new ViewHolder
+    // This inflates the layout and creates the view holder object
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.student_list_item, parent, false)
         return StudentViewHolder(view)
     }
 
+    // Called by RecyclerView to display data at a specific position
+    // This method is called automatically for each visible item and when scrolling
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         val student = students[position]
         holder.bind(student)

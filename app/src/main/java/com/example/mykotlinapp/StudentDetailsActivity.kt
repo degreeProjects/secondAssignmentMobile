@@ -46,7 +46,7 @@ class StudentDetailsActivity : AppCompatActivity() {
                     phoneNumber = phone
                 )
 
-                // Insert student using Model
+                // Insert new student using Model
                 model.addStudent(newStudent) {
                     Toast.makeText(this@StudentDetailsActivity, "Student added successfully", Toast.LENGTH_SHORT).show()
                     // Go back to MainActivity to see the updated list
