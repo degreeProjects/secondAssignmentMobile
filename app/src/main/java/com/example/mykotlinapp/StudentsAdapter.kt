@@ -24,6 +24,8 @@ class StudentsAdapter(
         return StudentViewHolder(view)
     }
 
+    // Called by RecyclerView to display data at a specific position
+    // This method is called automatically for each visible item and when scrolling
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         val student = students[position]
         holder.bind(student)
