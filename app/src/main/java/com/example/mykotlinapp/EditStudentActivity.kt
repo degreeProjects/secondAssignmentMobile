@@ -74,6 +74,7 @@ class EditStudentActivity : AppCompatActivity() {
             showDeleteConfirmationDialog()
         }
 
+        // Set up save button click listener
         editStudentBtnSave.setOnClickListener {
             saveStudent()
         }
