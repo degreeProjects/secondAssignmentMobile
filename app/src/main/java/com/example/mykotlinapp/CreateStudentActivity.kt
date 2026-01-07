@@ -10,11 +10,11 @@ import com.google.android.material.textfield.TextInputEditText
 
 class CreateStudentActivity : AppCompatActivity() {
 
-    private lateinit var etStudentId: TextInputEditText
-    private lateinit var etStudentName: TextInputEditText
-    private lateinit var etStudentPhone: TextInputEditText
-    private lateinit var etStudentAddress: TextInputEditText
-    private lateinit var btnSaveStudent: Button
+    private lateinit var createStudentId: TextInputEditText
+    private lateinit var createStudentName: TextInputEditText
+    private lateinit var createStudentPhone: TextInputEditText
+    private lateinit var createStudentAddress: TextInputEditText
+    private lateinit var createStudentBtn: Button
     private val model = Model.shared
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,37 +27,37 @@ class CreateStudentActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Initialize views
-        etStudentId = findViewById(R.id.etStudentId)
-        etStudentName = findViewById(R.id.etStudentName)
-        etStudentPhone = findViewById(R.id.etStudentPhone)
-        etStudentAddress = findViewById(R.id.etStudentAddress)
-        btnSaveStudent = findViewById(R.id.btnSaveStudent)
+        createStudentId = findViewById(R.id.createStudentId)
+        createStudentName = findViewById(R.id.createStudentName)
+        createStudentPhone = findViewById(R.id.createStudentPhone)
+        createStudentAddress = findViewById(R.id.createStudentAddress)
+        createStudentBtn = findViewById(R.id.createStudentBtn)
 
         // Set up Save button click listener
-        btnSaveStudent.setOnClickListener {
+        createStudentBtn.setOnClickListener {
             saveStudent()
         }
     }
 
     private fun saveStudent() {
         // Get input values
-        val studentId = etStudentId.text.toString().trim()
-        val studentName = etStudentName.text.toString().trim()
-        val studentPhone = etStudentPhone.text.toString().trim()
-        val studentAddress = etStudentAddress.text.toString().trim()
+        val studentId = createStudentId.text.toString().trim()
+        val studentName = createStudentName.text.toString().trim()
+        val studentPhone = createStudentPhone.text.toString().trim()
+        val studentAddress = createStudentAddress.text.toString().trim()
 
         // Validate required fields
         var isValid = true
 
         if (studentId.isEmpty()) {
-            etStudentId.error = "Student ID is required"
-            etStudentId.requestFocus()
+            createStudentId.error = "Student ID is required"
+            createStudentId.requestFocus()
             isValid = false
         }
 
         if (studentName.isEmpty()) {
-            etStudentName.error = "Name is required"
-            etStudentName.requestFocus()
+            createStudentName.error = "Name is required"
+            createStudentName.requestFocus()
             isValid = false
         }
 
@@ -66,8 +66,8 @@ class CreateStudentActivity : AppCompatActivity() {
             model.getStudentById(studentId) { existingStudent ->
                 if (existingStudent != null) {
                     // Student with this ID already exists - show inline error
-                    etStudentId.error = "This ID already exists"
-                    etStudentId.requestFocus()
+                    createStudentId.error = "This ID already exists"
+                    createStudentId.requestFocus()
                 } else {
                     // ID is unique, return the data
                     val resultIntent = Intent()
